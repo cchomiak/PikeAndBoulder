@@ -27,9 +27,18 @@ public class Player : MonoBehaviour {
 
     float pushPower;
 
+    public bool canChange = true;
+
+    public Texture2D fatFaceTexture, slimFaceTexture;
+    public GameObject cabeza;
+
+    ThirdPersonController tpcc;
+
     // Use this for initialization
     void Start()
     {
+        tpcc = GetComponent<ThirdPersonController>();
+
         currentTimer = 0.5f;
 
         if (isFat)
@@ -55,24 +64,23 @@ public class Player : MonoBehaviour {
         if (currentTimer < 0.5f)
         {
             targetAspect = Mathf.Lerp(minAspectTarget, maxAspectTarget, timeProgress);
-            Debug.Log("targetAspect: " + targetAspect);
+            //Debug.Log("targetAspect: " + targetAspect);
 
             theCamera.aspect = targetAspect / 9f;
         }
 
-        if (isFat && Input.GetKey(KeyCode.LeftControl))
+        if (canChange)
         {
-            //theCamera.aspect = 12.9f / 9f;
-            //targetAspect = 12.9f;
+            if (isFat && Input.GetKey(KeyCode.LeftControl))
+            {
+                GetSlim();
+            }
+            else if (!isFat && Input.GetKey(KeyCode.RightControl))
+            {
+                GetFat();
+            }
+        }
 
-            GetSlim();
-        }
-        else if (!isFat && Input.GetKey(KeyCode.RightControl))
-        {
-            //theCamera.aspect = 24f / 9f;
-            //targetAspect = 24f;
-            GetFat();
-        }
         //theCamera.aspect = desiredAspectW / desiredAspectH;	
     }
 
@@ -86,10 +94,14 @@ public class Player : MonoBehaviour {
         fatWorker.localScale = fatWorkerScale / 10f; // new Vector3(0.6666f, 1, 0.6666f);
         GetComponent<CharacterController>().radius = slimRadius;
 
-        GetComponent<ThirdPersonController>().walkSpeed = slimWalkSpeed;
-        GetComponent<ThirdPersonController>().jumpHeight = slimJump;
+        tpcc.walkSpeed = slimWalkSpeed;
+        tpcc.trotSpeed = slimWalkSpeed * 1.2f;
+        tpcc.jumpHeight = slimJump;
 
         pushPower = slimPushPower;
+        cabeza.renderer.material.mainTexture = slimFaceTexture;
+
+        fatWorker.gameObject.SetVisualRecursively(false);
     }
 
     void GetFat()
@@ -101,11 +113,16 @@ public class Player : MonoBehaviour {
         fatWorker.localScale = fatWorkerScale; // new Vector3(1.5f, 1, 1.5f);
         GetComponent<CharacterController>().radius = fatRadius;
 
-        GetComponent<ThirdPersonController>().walkSpeed = fatWalkSpeed;
-        GetComponent<ThirdPersonController>().jumpHeight = fatJump;
+        tpcc.walkSpeed = fatWalkSpeed;
+        tpcc.trotSpeed = fatWalkSpeed * 1.2f;
+        tpcc.jumpHeight = fatJump;
 
         pushPower = fatPushPower;
+
+        cabeza.renderer.material.mainTexture = fatFaceTexture;
+        fatWorker.gameObject.SetVisualRecursively(true);
     }
+
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
