@@ -5,9 +5,13 @@ public class NoChangeZone : MonoBehaviour
 {
     Player player;
 
+    public GameObject hint;
+
+
 	// Use this for initialization
 	void Start () 
     {
+        hint.SetActive(false);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 	}
 	
@@ -21,6 +25,7 @@ public class NoChangeZone : MonoBehaviour
         if (cInfo.gameObject.tag == player.gameObject.tag)
         {
             player.canChange = false;
+            hint.SetActive(true);
         }
     }
 
@@ -29,6 +34,7 @@ public class NoChangeZone : MonoBehaviour
         if (cInfo.gameObject.tag == player.gameObject.tag)
         {
             player.canChange = true;
+            hint.SetActive(false);
         }
     }
 

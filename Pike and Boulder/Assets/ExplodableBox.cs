@@ -4,7 +4,7 @@ using System.Collections;
 public class ExplodableBox : MonoBehaviour {
 
     public Transform CubePrefab;
-    public float Power = 0;//0.25f;
+    public float Power = 0.25f;
 
     public bool toBeDestroyed = false;
 
@@ -12,11 +12,11 @@ public class ExplodableBox : MonoBehaviour {
                                        new Vector3(1, -1, 1),
                                        new Vector3(-1, -1, 1),
                                        new Vector3(-1, -1, -1),
-                                       new Vector3(1, -1, -1),
+                                       new Vector3(1, -1, -1)/*,
                                        new Vector3(1, 1, 1),
                                        new Vector3(-1, 1, 1),
                                        new Vector3(-1, 1, -1),
-                                       new Vector3(1, 1, -1)
+                                       new Vector3(1, 1, -1)*/
                                    };
 
     private void Start()
@@ -30,13 +30,13 @@ public class ExplodableBox : MonoBehaviour {
             return;
         }
         
-        if (Input.GetKeyDown(KeyCode.M))
+        /*if (Input.GetKeyDown(KeyCode.M))
         {
             Explode();
-        }
+        }*/
     }
 
-    private void Explode()
+    public void Explode()
     {
         if (transform.localScale.x > 0.05f)
         {
@@ -45,10 +45,10 @@ public class ExplodableBox : MonoBehaviour {
             {
                 var c = Instantiate(CubePrefab) as Transform;
                 c.parent = transform.parent;
-                c.name = "Cube";
+                c.name = "Lil Cube";
                 c.localScale = Random.Range(0.1f, 0.5f) * transform.localScale;
-                c.position = transform.TransformPoint(c.localScale.x / 10.0f * directions[i % 8]);
-                c.rigidbody.velocity = Vector3.zero; // Power * Random.insideUnitSphere;
+                c.position = transform.TransformPoint(c.localScale.x / 10.0f * directions.GetRandom()); //[i % directions.Length]);
+                c.rigidbody.velocity = Power * Random.insideUnitSphere;
                 c.renderer.material.color = color;
             }
         }

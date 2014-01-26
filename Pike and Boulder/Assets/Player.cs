@@ -34,6 +34,9 @@ public class Player : MonoBehaviour {
 
     ThirdPersonController tpcc;
 
+    bool flashlightIsOn = true;
+    public GameObject flashlight;
+
     // Use this for initialization
     void Start()
     {
@@ -71,14 +74,19 @@ public class Player : MonoBehaviour {
 
         if (canChange)
         {
-            if (isFat && Input.GetKey(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
             {
-                GetSlim();
+                if (isFat)
+                    GetSlim();
+                else
+                    GetFat();
             }
-            else if (!isFat && Input.GetKey(KeyCode.RightControl))
-            {
-                GetFat();
-            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flashlightIsOn = !flashlightIsOn;
+            flashlight.SetActive(flashlightIsOn);
         }
 
         //theCamera.aspect = desiredAspectW / desiredAspectH;	
