@@ -8,6 +8,10 @@ public class ExplodableBox : MonoBehaviour {
 
     public bool toBeDestroyed = false;
 
+    public GameObject explosionSoundPrefab;
+    public GameObject coinParticlePrefab;
+    public GameObject coinsSoundPrefab;
+
     private Vector3[] directions = {
                                        new Vector3(1, -1, 1),
                                        new Vector3(-1, -1, 1),
@@ -38,6 +42,10 @@ public class ExplodableBox : MonoBehaviour {
 
     public void Explode()
     {
+        explosionSoundPrefab.Clone(transform.parent);
+        coinsSoundPrefab.Clone(transform.parent);
+        coinParticlePrefab.Clone(transform.position, transform.parent);
+
         if (transform.localScale.x > 0.05f)
         {
             Color color = new Color(Random.value, Random.value, Random.value);

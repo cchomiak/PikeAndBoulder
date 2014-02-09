@@ -2,24 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HintZone : MonoBehaviour 
+public class SwitchZone : MonoBehaviour 
 {
     Player player;
 
     bool showHint = false;
     public GameObject hint;
+    
+    public GameObject SwitchSoundPrefab;
+    public MoveDoor door;
 
-    public List<ExplodableBox> objectsToExploded;
-
+    //Objeto que se modifica con este switch
+    //
+    
     // Use this for initialization
     void Start()
     {
         hint.SetActive(false);
         
-        
-        if (objectsToExploded == null)
-            objectsToExploded = new List<ExplodableBox>();
-
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         hint.SetActive(false);
@@ -27,9 +27,6 @@ public class HintZone : MonoBehaviour
 
     void OnTriggerEnter(Collider cInfo)
     {
-        if (!player.isFat)
-            return;
-
         if (cInfo.gameObject.tag == player.gameObject.tag)
         {
             showHint = true;
@@ -48,19 +45,12 @@ public class HintZone : MonoBehaviour
 
     void OnTriggerStay(Collider cInfo)
     {
-        if (!player.isFat)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            foreach (ExplodableBox eb in objectsToExploded)
-            {
-                if (eb != null)
-                    eb.Explode();
-            }
-            objectsToExploded.Clear();
+            SwitchSoundPrefab.Clone(transform.parent);
             hint.SetActive(false);
-            Destroy(gameObject);
+            door.MoveTheDoor();
+            Destroy(this);
         }
     }
 

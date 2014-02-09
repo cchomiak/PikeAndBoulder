@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour 
+{
 
     public float desiredAspectW;
     public float desiredAspectH;
@@ -32,10 +33,18 @@ public class Player : MonoBehaviour {
     public Texture2D fatFaceTexture, slimFaceTexture;
     public GameObject cabeza;
 
+    public int score = 0;
+
     ThirdPersonController tpcc;
+
+    public GameObject jumpSoundPrefab;
 
     bool flashlightIsOn = true;
     public GameObject flashlight;
+
+    public GUIText coinCounter;
+    int previousScore = -1;
+
 
     // Use this for initialization
     void Start()
@@ -87,6 +96,17 @@ public class Player : MonoBehaviour {
         {
             flashlightIsOn = !flashlightIsOn;
             flashlight.SetActive(flashlightIsOn);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpSoundPrefab.Clone(transform);
+        }
+
+        if (score != previousScore)
+        {
+            coinCounter.text = score.ToString();
+            previousScore = score;
         }
 
         //theCamera.aspect = desiredAspectW / desiredAspectH;	
