@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         tpcc = GetComponent<ThirdPersonController>();
 
         currentTimer = 0.5f;
@@ -66,6 +67,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Main Menu");
+            Application.LoadLevel("Menu");
+        }
+
         float targetAspect = 0f;
 
         currentTimer += Time.deltaTime;
@@ -83,7 +90,7 @@ public class Player : MonoBehaviour
 
         if (canChange)
         {
-            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
+            if (Input.GetKeyDown(KeyCode.C)) // || Input.GetKeyDown(KeyCode.RightControl))
             {
                 if (isFat)
                     GetSlim();

@@ -18,7 +18,7 @@ public class BadFloor : MonoBehaviour
 
     void OnTriggerEnter(Collider cInfo)
     {
-        Application.LoadLevel(3);
+        Application.LoadLevel("Ending");
         /*if (cInfo.gameObject.tag == player.gameObject.tag)
         {
         }*/

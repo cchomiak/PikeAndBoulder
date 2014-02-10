@@ -58,6 +58,8 @@ public class ExplodableBox : MonoBehaviour {
                 c.position = transform.TransformPoint(c.localScale.x / 10.0f * directions.GetRandom()); //[i % directions.Length]);
                 c.rigidbody.velocity = Power * Random.insideUnitSphere;
                 c.renderer.material.color = color;
+                //c.gameObject.collider.isTrigger = true;
+                c.gameObject.layer = LayerMask.NameToLayer("noPlayerCol");
             }
         }
         Destroy(gameObject);
